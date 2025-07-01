@@ -725,4 +725,183 @@ document.addEventListener('DOMContentLoaded', function() {
         // 페이지 로딩 시 초기 검사
         checkFormValidity();
     }
+});
+
+// 푸터 정책 모달창 관련 기능들 (초등학생 설명: 이용약관, 개인정보처리방침 팝업창 기능)
+
+/**
+ * 정책 모달창을 보여주는 함수
+ * @param {string} type - 정책 타입 ('terms' 또는 'privacy')
+ */
+function showPolicy(type) {
+    console.log(`${type} 정책 모달을 엽니다`);
+    
+    const modal = document.getElementById('policyModal'); // 모달 요소 찾기
+    const title = document.getElementById('modalTitle'); // 모달 제목 요소 찾기
+    const body = document.getElementById('modalBody'); // 모달 내용 요소 찾기
+    
+    // 모달 요소가 존재하는지 확인
+    if (!modal || !title || !body) {
+        console.error('모달 요소를 찾을 수 없습니다');
+        return;
+    }
+    
+    // 정책 타입에 따라 다른 내용을 보여줌 (초등학생 설명: 클릭한 정책에 맞는 내용 보여주기)
+    if (type === 'terms') {
+        title.textContent = '이용약관'; // 제목 설정
+        body.innerHTML = `
+            <h4>제1조 (목적)</h4>
+            <p>이 약관은 청춘다움 주식회사(이하 "회사")가 운영하는 웹사이트에서 제공하는 서비스의 이용 조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p>
+            
+            <h4>제2조 (용어의 정의)</h4>
+            <p>1. "서비스"란 회사가 제공하는 모든 브랜딩 및 마케팅 솔루션을 의미합니다.</p>
+            <p>2. "이용자"란 이 약관에 따라 회사의 서비스를 받는 회원 및 비회원을 말합니다.</p>
+            
+            <h4>제3조 (약관의 효력 및 변경)</h4>
+            <p>1. 이 약관은 서비스 화면에 게시하거나 기타의 방법으로 이용자에게 공지함으로써 효력을 발생합니다.</p>
+            <p>2. 회사는 필요하다고 인정되는 경우 이 약관을 변경할 수 있으며, 변경된 약관은 공지 후 효력을 발생합니다.</p>
+            
+            <h4>제4조 (서비스 제공)</h4>
+            <p>회사는 다음과 같은 서비스를 제공합니다:</p>
+            <p>• AI 기반 브랜딩 솔루션</p>
+            <p>• 웹페이지 기획 및 디자인</p>
+            <p>• 영상 제작 서비스</p>
+            <p>• 브랜드 네이밍 서비스</p>
+            
+            <h4>제5조 (이용자의 의무)</h4>
+            <p>이용자는 서비스 이용 시 다음 행위를 하여서는 안 됩니다:</p>
+            <p>• 타인의 정보 도용</p>
+            <p>• 회사의 저작권 침해</p>
+            <p>• 기타 관련 법령에 위배되는 행위</p>
+            
+            <h4>제6조 (면책조항)</h4>
+            <p>회사는 천재지변 또는 이에 준하는 불가항력으로 인하여 서비스를 제공할 수 없는 경우에는 서비스 제공에 관한 책임이 면제됩니다.</p>
+        `; // 이용약관 내용
+        console.log('이용약관 내용을 로드했습니다');
+        
+    } else if (type === 'privacy') {
+        title.textContent = '개인정보처리방침'; // 제목 설정
+        body.innerHTML = `
+            <h4>1. 개인정보의 처리 목적</h4>
+            <p>청춘다움 주식회사는 다음의 목적을 위하여 개인정보를 처리합니다:</p>
+            <p>• 서비스 제공 및 계약의 이행</p>
+            <p>• 고객 상담 및 불만처리</p>
+            <p>• 마케팅 및 광고에의 활용</p>
+            <p>• 서비스 개선을 위한 통계 분석</p>
+            
+            <h4>2. 처리하는 개인정보의 항목</h4>
+            <p><strong>필수항목:</strong> 이름, 연락처, 이메일</p>
+            <p><strong>선택항목:</strong> 회사명, 담당업무, 문의내용</p>
+            <p><strong>자동수집항목:</strong> IP주소, 쿠키, 방문일시, 서비스 이용 기록</p>
+            
+            <h4>3. 개인정보의 처리 및 보유기간</h4>
+            <p>원칙적으로 개인정보 처리목적이 달성된 후에는 지체없이 해당 정보를 파기합니다.</p>
+            <p>단, 다음의 정보에 대해서는 아래의 이유로 명시한 기간 동안 보존합니다:</p>
+            <p>• 계약 및 청약철회 등에 관한 기록: 5년</p>
+            <p>• 대금결제 및 재화 등의 공급에 관한 기록: 5년</p>
+            <p>• 소비자의 불만 또는 분쟁처리에 관한 기록: 3년</p>
+            
+            <h4>4. 개인정보의 제3자 제공</h4>
+            <p>회사는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다.</p>
+            <p>다만, 다음의 경우에는 예외로 합니다:</p>
+            <p>• 이용자가 사전에 동의한 경우</p>
+            <p>• 법령의 규정에 의거하거나, 수사 목적으로 법령에 정해진 절차와 방법에 따라 수사기관의 요구가 있는 경우</p>
+            
+            <h4>5. 개인정보의 파기</h4>
+            <p>개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때는 지체없이 해당 개인정보를 파기합니다.</p>
+            <p>전자적 파일 형태의 정보는 기록을 재생할 수 없는 기술적 방법을 사용합니다.</p>
+            
+            <h4>6. 정보주체의 권리</h4>
+            <p>이용자는 개인정보 처리에 관한 다음과 같은 권리를 행사할 수 있습니다:</p>
+            <p>• 개인정보 처리현황 통지요구</p>
+            <p>• 개인정보 열람요구</p>
+            <p>• 개인정보 정정·삭제요구</p>
+            <p>• 개인정보 처리정지요구</p>
+            
+            <h4>7. 개인정보 보호책임자</h4>
+            <p><strong>성명:</strong> 윤상민</p>
+            <p><strong>직책:</strong> 개인정보보호책임자</p>
+            <p><strong>연락처:</strong> sangsamo@naver.com</p>
+            <p><strong>전화:</strong> 010-8961-4255</p>
+            
+            <h4>8. 개인정보 처리방침 변경</h4>
+            <p>이 개인정보처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이 있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다.</p>
+        `; // 개인정보처리방침 내용
+        console.log('개인정보처리방침 내용을 로드했습니다');
+    }
+    
+    modal.style.display = 'flex'; // 모달 창 보이기
+    
+    // 모달이 나타날 때 부드러운 페이드인 효과 (초등학생 설명: 팝업창이 예쁘게 나타나게 하기)
+    setTimeout(() => {
+        modal.style.opacity = '1'; // 투명도 1로 변경
+    }, 10);
+    
+    // 모달 내용을 맨 위로 스크롤 (초등학생 설명: 내용을 처음부터 볼 수 있게 하기)
+    body.scrollTop = 0;
+}
+
+/**
+ * 정책 모달창을 닫는 함수 (초등학생 설명: 팝업창을 닫는 함수)
+ */
+function closePolicy() {
+    console.log('정책 모달을 닫습니다');
+    
+    const modal = document.getElementById('policyModal'); // 모달 요소 찾기
+    
+    if (!modal) {
+        console.error('모달 요소를 찾을 수 없습니다');
+        return;
+    }
+    
+    // 부드러운 페이드아웃 효과 (초등학생 설명: 팝업창이 예쁘게 사라지게 하기)
+    modal.style.opacity = '0'; // 투명도 0으로 변경
+    
+    // 애니메이션이 끝나면 모달 숨기기
+    setTimeout(() => {
+        modal.style.display = 'none'; // 모달 창 숨기기
+        console.log('모달이 완전히 닫혔습니다');
+    }, 300); // 0.3초 후 실행
+}
+
+// 모달 관련 이벤트 리스너 등록 (초등학생 설명: 키보드나 마우스 동작에 반응하는 기능 추가)
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('푸터 모달 기능을 초기화합니다');
+    
+    // ESC 키를 누르면 모달 닫기 (초등학생 설명: ESC 키를 누르면 팝업창 닫기)
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') { // ESC 키 확인
+            const modal = document.getElementById('policyModal'); // 모달 요소 찾기
+            if (modal && modal.style.display === 'flex') { // 모달이 열려있으면
+                closePolicy(); // 모달 닫기
+                console.log('ESC 키로 모달을 닫았습니다');
+            }
+        }
+    });
+    
+    // 모달 초기 스타일 설정 (초등학생 설명: 팝업창 기본 설정하기)
+    const modal = document.getElementById('policyModal'); // 모달 요소 찾기
+    if (modal) {
+        modal.style.opacity = '0'; // 초기 투명도 0
+        modal.style.transition = 'opacity 0.3s ease'; // 부드러운 변화 효과
+        console.log('모달 초기 스타일이 설정되었습니다');
+    }
+    
+    // 소셜 미디어 링크 클릭 이벤트 (초등학생 설명: SNS 버튼 클릭 기능)
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // 기본 링크 동작 막기
+            
+            const socialName = this.querySelector('.social-name').textContent; // SNS 이름 가져오기
+            console.log(`${socialName} 링크를 클릭했습니다`);
+            
+            // 실제 프로젝트에서는 여기에 각 SNS 링크를 추가합니다
+            // 예시: window.open('https://instagram.com/yourpage', '_blank');
+            
+            alert(`${socialName} 페이지로 이동합니다.\n(실제 운영 시에는 해당 SNS 페이지가 열립니다)`);
+        });
+    });
+    
+    console.log('푸터 모달 기능 초기화가 완료되었습니다');
 }); 
