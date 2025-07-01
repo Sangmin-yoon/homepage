@@ -476,10 +476,12 @@ body {
 /* 제품명 스타일 */
 .product-name {
     font-size: 24px; /* 글자 크기 24px */
-    font-weight: bold; /* 굵은 글자 */
+    font-weight: 900; /* 매우 굵은 글자 (bold → 900) */
     color: #1f4e79; /* 다크블루 색상 */
     margin-bottom: 15px; /* 아래쪽 여백 15px */
     text-align: center; /* 가운데 정렬 */
+    text-shadow: 0 1px 3px rgba(31, 78, 121, 0.3); /* 텍스트 그림자로 더 진하게 */
+    letter-spacing: 1px; /* 글자 간격 추가로 더 강조 */
 }
 
 /* 제품 설명 영역 */
@@ -1475,6 +1477,8 @@ body {
     
     .product-name {
         font-size: 20px; /* 태블릿에서 제품명 크기 줄임 */
+        font-weight: 900; /* 태블릿에서도 매우 굵은 글자 */
+        letter-spacing: 0.8px; /* 태블릿에서 글자 간격 조정 */
     }
     
     /* 태블릿용 리뷰 섹션 */
@@ -1758,6 +1762,8 @@ body {
     .product-name {
         font-size: 18px; /* 모바일에서 제품명 크기 더 줄임 */
         margin-bottom: 10px; /* 아래 여백 줄임 */
+        font-weight: 900; /* 모바일에서도 매우 굵은 글자 */
+        letter-spacing: 0.5px; /* 모바일에서 글자 간격 조정 */
     }
     
     .product-description p {
