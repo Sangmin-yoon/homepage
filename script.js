@@ -1,0 +1,728 @@
+// 웹페이지가 완전히 로딩된 후에 실행되는 코드
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // 햄버거 메뉴 버튼과 모바일 메뉴를 찾아서 변수에 저장
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn'); // 햄버거 메뉴 버튼
+    const mobileMenu = document.querySelector('.mobile-menu'); // 모바일 메뉴
+    const mobileMenuItems = document.querySelectorAll('.mobile-menu-item'); // 모바일 메뉴 항목들
+    const mobileLoginBtn = document.querySelector('.mobile-login-btn'); // 모바일 로그인 버튼
+    
+    // 햄버거 메뉴 버튼을 클릭했을 때 실행되는 함수
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+            // 모바일 메뉴가 열려있는지 확인
+            const isMenuOpen = mobileMenu.classList.contains('active');
+            
+            if (isMenuOpen) {
+                // 메뉴가 열려있으면 닫기
+                mobileMenu.classList.remove('active');
+                console.log('모바일 메뉴를 닫았습니다'); // 개발자가 확인할 수 있는 메시지
+            } else {
+                // 메뉴가 닫혀있으면 열기
+                mobileMenu.classList.add('active');
+                console.log('모바일 메뉴를 열었습니다'); // 개발자가 확인할 수 있는 메시지
+            }
+        });
+    }
+    
+    // 모바일 메뉴 항목을 클릭했을 때 해당 섹션으로 이동하고 메뉴 닫기
+    mobileMenuItems.forEach(function(item) {
+        item.addEventListener('click', function(event) {
+            event.preventDefault(); // 링크 이동을 막음
+            
+            // 클릭한 메뉴 이름 가져오기
+            const menuName = item.textContent.trim();
+            console.log(`모바일 ${menuName} 메뉴를 클릭했습니다`);
+            
+            // 메뉴별로 해당 섹션으로 스크롤 이동
+            let targetSection = null;
+            
+            if (menuName === '청춘다움') {
+                // 히어로 캐러셀 섹션으로 이동
+                targetSection = document.querySelector('.hero-carousel');
+            } else if (menuName === '브랜드') {
+                // 제품 섹션으로 이동
+                targetSection = document.querySelector('.product-section');
+            } else if (menuName === '인사말') {
+                // CEO 인사말 섹션으로 이동
+                targetSection = document.querySelector('.ceo-section');
+            }
+            
+            // 대상 섹션이 존재하면 부드럽게 스크롤 이동
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth', // 부드러운 스크롤
+                    block: 'start' // 섹션 맨 위로 이동
+                });
+                console.log(`${menuName} 섹션으로 이동했습니다`);
+            }
+            
+            // 메뉴 항목을 클릭하면 모바일 메뉴를 자동으로 닫기
+            mobileMenu.classList.remove('active');
+            console.log('메뉴 항목을 클릭하여 모바일 메뉴를 닫았습니다');
+        });
+    });
+    
+    // 모바일 로그인 버튼을 클릭했을 때 메뉴 닫기
+    if (mobileLoginBtn) {
+        mobileLoginBtn.addEventListener('click', function() {
+            // 로그인 버튼을 클릭하면 모바일 메뉴를 자동으로 닫기
+            mobileMenu.classList.remove('active');
+            
+            // 로그인 기능 (여기서는 알림창으로 대체)
+            alert('로그인 페이지로 이동합니다!');
+            console.log('모바일 로그인 버튼을 클릭했습니다');
+        });
+    }
+    
+    // 데스크탑 로그인 버튼 클릭 이벤트
+    const loginBtn = document.querySelector('.login-btn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function() {
+            // 로그인 기능 (여기서는 알림창으로 대체)
+            alert('로그인 페이지로 이동합니다!');
+            console.log('데스크탑 로그인 버튼을 클릭했습니다');
+        });
+    }
+    
+    // 화면 크기가 변경될 때 실행되는 함수
+    window.addEventListener('resize', function() {
+        // 화면이 큰 크기로 변경되면 모바일 메뉴를 자동으로 닫기
+        if (window.innerWidth > 768) {
+            mobileMenu.classList.remove('active');
+            console.log('화면 크기가 커져서 모바일 메뉴를 닫았습니다');
+        }
+    });
+    
+    // 모바일 메뉴 외부를 클릭했을 때 메뉴 닫기
+    document.addEventListener('click', function(event) {
+        // 클릭한 요소가 햄버거 버튼이나 모바일 메뉴가 아닌 경우
+        const isClickInsideMenu = mobileMenu.contains(event.target);
+        const isClickOnMenuBtn = mobileMenuBtn.contains(event.target);
+        
+        // 메뉴 외부를 클릭하고, 메뉴가 열려있으면 닫기
+        if (!isClickInsideMenu && !isClickOnMenuBtn && mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            console.log('메뉴 외부를 클릭하여 모바일 메뉴를 닫았습니다');
+        }
+    });
+    
+    // 메뉴 항목 클릭 이벤트 처리 (각 섹션으로 부드럽게 이동)
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(function(item) {
+        // 메뉴 항목을 클릭했을 때
+        item.addEventListener('click', function(event) {
+            event.preventDefault(); // 링크 이동을 막음
+            
+            // 클릭한 메뉴 이름 가져오기
+            const menuName = item.textContent.trim();
+            console.log(`${menuName} 메뉴를 클릭했습니다`);
+            
+            // 메뉴별로 해당 섹션으로 스크롤 이동
+            let targetSection = null;
+            
+            if (menuName === '청춘다움') {
+                // 히어로 캐러셀 섹션으로 이동
+                targetSection = document.querySelector('.hero-carousel');
+            } else if (menuName === '브랜드') {
+                // 제품 섹션으로 이동
+                targetSection = document.querySelector('.product-section');
+            } else if (menuName === '인사말') {
+                // CEO 인사말 섹션으로 이동
+                targetSection = document.querySelector('.ceo-section');
+            }
+            
+            // 대상 섹션이 존재하면 부드럽게 스크롤 이동
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth', // 부드러운 스크롤
+                    block: 'start' // 섹션 맨 위로 이동
+                });
+                console.log(`${menuName} 섹션으로 이동했습니다`);
+                
+                // 모바일 메뉴가 열려있으면 닫기
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    console.log('메뉴 이동 후 모바일 메뉴를 닫았습니다');
+                }
+            } else {
+                console.log(`${menuName}에 해당하는 섹션을 찾을 수 없습니다`);
+            }
+        });
+    });
+    
+    console.log('헤더 스크립트가 성공적으로 로드되었습니다!'); // 스크립트 로딩 확인
+    
+    // 히어로 캐러셀 기능 시작
+    initializeCarousel();
+    
+    // 리뷰 섹션 별점 애니메이션 초기화
+    initializeReviewAnimations();
+    
+});
+
+// 히어로 캐러셀 관련 변수들
+let currentSlideIndex = 0; // 현재 보이고 있는 슬라이드 번호 (0부터 시작)
+let totalSlides = 3; // 전체 슬라이드 개수
+let autoSlideInterval; // 자동 슬라이드 타이머
+
+// 캐러셀 초기화 함수
+function initializeCarousel() {
+    console.log('히어로 캐러셀을 초기화합니다');
+    
+    // 자동 슬라이드 시작 (5초마다 다음 슬라이드로 이동)
+    startAutoSlide();
+    
+    // 마우스가 캐러셀 위에 있을 때는 자동 슬라이드 멈춤
+    const heroCarousel = document.querySelector('.hero-carousel');
+    if (heroCarousel) {
+        heroCarousel.addEventListener('mouseenter', stopAutoSlide);
+        heroCarousel.addEventListener('mouseleave', startAutoSlide);
+    }
+}
+
+// 슬라이드 변경 함수 (화살표 버튼에서 사용)
+function changeSlide(direction) {
+    console.log(`슬라이드를 ${direction > 0 ? '다음으로' : '이전으로'} 이동합니다`);
+    
+    // 자동 슬라이드를 멈추고 다시 시작 (사용자가 조작한 후)
+    stopAutoSlide();
+    
+    // 현재 슬라이드 인덱스 변경
+    currentSlideIndex += direction;
+    
+    // 슬라이드 인덱스가 범위를 벗어나면 조정
+    if (currentSlideIndex >= totalSlides) {
+        currentSlideIndex = 0; // 마지막 슬라이드에서 첫 번째 슬라이드로
+    } else if (currentSlideIndex < 0) {
+        currentSlideIndex = totalSlides - 1; // 첫 번째 슬라이드에서 마지막 슬라이드로
+    }
+    
+    // 슬라이드 표시 업데이트
+    updateSlideDisplay();
+    
+    // 3초 후 자동 슬라이드 다시 시작
+    setTimeout(startAutoSlide, 3000);
+}
+
+// 특정 슬라이드로 이동하는 함수 (인디케이터에서 사용)
+function currentSlide(slideNumber) {
+    console.log(`${slideNumber}번 슬라이드로 이동합니다`);
+    
+    // 자동 슬라이드를 멈추고 다시 시작
+    stopAutoSlide();
+    
+    // 슬라이드 번호를 배열 인덱스로 변환 (1,2,3 → 0,1,2)
+    currentSlideIndex = slideNumber - 1;
+    
+    // 슬라이드 표시 업데이트
+    updateSlideDisplay();
+    
+    // 3초 후 자동 슬라이드 다시 시작
+    setTimeout(startAutoSlide, 3000);
+}
+
+// 슬라이드 표시를 업데이트하는 함수
+function updateSlideDisplay() {
+    // 모든 슬라이드에서 'active' 클래스 제거
+    const slides = document.querySelectorAll('.slide');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    slides.forEach(function(slide, index) {
+        if (index === currentSlideIndex) {
+            slide.classList.add('active'); // 현재 슬라이드에 'active' 클래스 추가
+        } else {
+            slide.classList.remove('active'); // 다른 슬라이드에서 'active' 클래스 제거
+        }
+    });
+    
+    // 인디케이터 업데이트
+    indicators.forEach(function(indicator, index) {
+        if (index === currentSlideIndex) {
+            indicator.classList.add('active'); // 현재 인디케이터 활성화
+        } else {
+            indicator.classList.remove('active'); // 다른 인디케이터 비활성화
+        }
+    });
+    
+    console.log(`현재 ${currentSlideIndex + 1}번째 슬라이드를 표시합니다`);
+}
+
+// 자동 슬라이드 시작 함수
+function startAutoSlide() {
+    // 이미 실행 중인 타이머가 있으면 제거
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+    }
+    
+    // 5초마다 다음 슬라이드로 자동 이동
+    autoSlideInterval = setInterval(function() {
+        currentSlideIndex++;
+        
+        // 마지막 슬라이드에서 첫 번째 슬라이드로 순환
+        if (currentSlideIndex >= totalSlides) {
+            currentSlideIndex = 0;
+        }
+        
+        updateSlideDisplay();
+        console.log('자동으로 다음 슬라이드로 이동했습니다');
+    }, 5000); // 5000ms = 5초
+    
+    console.log('자동 슬라이드가 시작되었습니다');
+}
+
+// 자동 슬라이드 중지 함수
+function stopAutoSlide() {
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+        console.log('자동 슬라이드가 중지되었습니다');
+    }
+}
+
+// 터치 이벤트 지원 (모바일용)
+let touchStartX = 0; // 터치 시작 위치
+let touchEndX = 0; // 터치 끝 위치
+
+// 터치 시작 이벤트
+document.addEventListener('touchstart', function(event) {
+    touchStartX = event.changedTouches[0].screenX;
+});
+
+// 터치 끝 이벤트
+document.addEventListener('touchend', function(event) {
+    touchEndX = event.changedTouches[0].screenX;
+    handleSwipe(); // 스와이프 처리
+});
+
+// 스와이프 처리 함수
+function handleSwipe() {
+    const swipeThreshold = 50; // 최소 스와이프 거리 (픽셀)
+    const swipeDistance = touchEndX - touchStartX;
+    
+    // 히어로 영역에서만 스와이프 동작
+    const heroCarousel = document.querySelector('.hero-carousel');
+    if (heroCarousel && event.target.closest('.hero-carousel')) {
+        if (swipeDistance > swipeThreshold) {
+            // 오른쪽으로 스와이프 = 이전 슬라이드
+            changeSlide(-1);
+            console.log('오른쪽 스와이프: 이전 슬라이드로 이동');
+        } else if (swipeDistance < -swipeThreshold) {
+            // 왼쪽으로 스와이프 = 다음 슬라이드
+            changeSlide(1);
+            console.log('왼쪽 스와이프: 다음 슬라이드로 이동');
+        }
+    }
+}
+
+// 키보드 이벤트 지원
+document.addEventListener('keydown', function(event) {
+    // 좌우 화살표 키로 슬라이드 조작
+    if (event.key === 'ArrowLeft') {
+        changeSlide(-1);
+        console.log('왼쪽 화살표 키: 이전 슬라이드로 이동');
+    } else if (event.key === 'ArrowRight') {
+        changeSlide(1);
+        console.log('오른쪽 화살표 키: 다음 슬라이드로 이동');
+    }
+});
+
+// 제품 설명 더보기/접기 기능
+function toggleDescription(button) {
+    // 버튼이 속한 제품 아이템 찾기
+    const productItem = button.closest('.product-item');
+    const preview = productItem.querySelector('.description-preview');
+    const full = productItem.querySelector('.description-full');
+    
+    // 현재 상태 확인 (접혀있는지 펼쳐져있는지)
+    const isExpanded = full.style.display === 'block';
+    
+    if (isExpanded) {
+        // 현재 펼쳐져 있으면 접기
+        full.style.display = 'none'; // 전체 설명 숨기기
+        preview.style.display = 'block'; // 미리보기 보이기
+        button.textContent = '더보기'; // 버튼 텍스트 변경
+        button.classList.remove('expanded'); // 버튼 스타일 원래대로
+        console.log('제품 설명을 접었습니다');
+    } else {
+        // 현재 접혀있으면 펼치기
+        preview.style.display = 'none'; // 미리보기 숨기기
+        full.style.display = 'block'; // 전체 설명 보이기
+        button.textContent = '접기'; // 버튼 텍스트 변경
+        button.classList.add('expanded'); // 버튼 스타일 변경
+        console.log('제품 설명을 펼쳤습니다');
+    }
+    
+    // 부드러운 스크롤 효과 (선택사항)
+    setTimeout(function() {
+        productItem.scrollIntoView({
+            behavior: 'smooth', // 부드러운 스크롤
+            block: 'nearest' // 가장 가까운 위치로 스크롤
+        });
+    }, 100); // 0.1초 후 실행
+}
+
+// 리뷰 섹션 애니메이션 초기화 함수
+function initializeReviewAnimations() {
+    console.log('리뷰 섹션 애니메이션을 초기화합니다');
+    
+    // 스크롤 이벤트로 리뷰 섹션이 화면에 나타날 때 애니메이션 실행
+    const reviewSection = document.querySelector('.review-section');
+    
+    if (reviewSection) {
+        // Intersection Observer API를 사용하여 화면에 보일 때 애니메이션 실행
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    // 리뷰 섹션이 화면에 보이면 별점 애니메이션 시작
+                    animateStars();
+                    // 한 번만 실행하도록 observer 해제
+                    observer.unobserve(entry.target);
+                    console.log('리뷰 섹션이 화면에 나타나 별점 애니메이션을 시작합니다');
+                }
+            });
+        }, {
+            threshold: 0.3 // 30% 보일 때 애니메이션 실행
+        });
+        
+        observer.observe(reviewSection);
+    }
+}
+
+// 별점 애니메이션 함수
+function animateStars() {
+    const reviewItems = document.querySelectorAll('.review-item');
+    
+    reviewItems.forEach(function(item, itemIndex) {
+        const stars = item.querySelectorAll('.star.filled');
+        
+        // 각 리뷰 아이템마다 다른 시작 시간으로 별점 애니메이션
+        setTimeout(function() {
+            stars.forEach(function(star, starIndex) {
+                // 각 별마다 순차적으로 애니메이션 적용
+                setTimeout(function() {
+                    // 별을 일시적으로 투명하게 만든 후 다시 나타나게 함
+                    star.style.opacity = '0';
+                    star.style.transform = 'scale(0.5)';
+                    
+                    setTimeout(function() {
+                        star.style.transition = 'all 0.3s ease';
+                        star.style.opacity = '1';
+                        star.style.transform = 'scale(1)';
+                        
+                        // 별이 나타날 때 반짝이는 효과
+                        star.style.animation = 'starTwinkle 0.6s ease';
+                        
+                        console.log(`${itemIndex + 1}번째 리뷰의 ${starIndex + 1}번째 별이 나타났습니다`);
+                    }, 50);
+                }, starIndex * 100); // 각 별마다 0.1초씩 지연
+            });
+        }, itemIndex * 200); // 각 리뷰마다 0.2초씩 지연
+    });
+}
+
+// 리뷰 아이템 호버 효과 강화
+document.addEventListener('DOMContentLoaded', function() {
+    const reviewItems = document.querySelectorAll('.review-item');
+    
+    reviewItems.forEach(function(item) {
+        // 마우스가 리뷰 아이템 위에 올라갔을 때
+        item.addEventListener('mouseenter', function() {
+            const stars = this.querySelectorAll('.star.filled');
+            
+            // 호버시 별들이 순차적으로 반짝이는 효과
+            stars.forEach(function(star, index) {
+                setTimeout(function() {
+                    star.style.animation = 'starTwinkle 0.4s ease';
+                }, index * 50); // 각 별마다 0.05초씩 지연
+            });
+            
+            console.log('리뷰 아이템에 마우스를 올렸습니다');
+        });
+        
+        // 마우스가 리뷰 아이템에서 벗어났을 때
+        item.addEventListener('mouseleave', function() {
+            const stars = this.querySelectorAll('.star.filled');
+            
+            // 애니메이션 초기화
+            stars.forEach(function(star) {
+                star.style.animation = '';
+            });
+            
+            console.log('리뷰 아이템에서 마우스가 벗어났습니다');
+        });
+    });
+});
+
+// CEO 인사말 더보기/닫기 기능
+function toggleMessage() {
+    console.log('더보기/닫기 버튼이 클릭되었습니다');
+    
+    // HTML 요소들을 찾아서 변수에 저장 (초등학생 설명: 버튼과 텍스트들을 찾아서 이름을 붙임)
+    const messagePreview = document.getElementById('messagePreview'); // 미리보기 텍스트
+    const messageFull = document.getElementById('messageFull'); // 전체 텍스트
+    const toggleBtn = document.getElementById('toggleBtn'); // 더보기/닫기 버튼
+    
+    // 현재 전체 메시지가 보이는지 확인 (초등학생 설명: 지금 긴 글이 보이는지 확인)
+    const isFullVisible = messageFull.style.display === 'block';
+    
+    if (isFullVisible) {
+        // 전체 메시지가 보이고 있으면 미리보기로 바꿈 (초등학생 설명: 긴 글을 짧게 만들기)
+        messagePreview.style.display = 'block'; // 미리보기 보이기
+        messageFull.style.display = 'none'; // 전체 텍스트 숨기기
+        toggleBtn.textContent = '더보기'; // 버튼 텍스트를 "더보기"로 변경
+        
+        console.log('인사말을 미리보기 모드로 변경했습니다');
+        
+        // 부드럽게 CEO 섹션 맨 위로 스크롤 (초등학생 설명: 화면을 부드럽게 위로 올림)
+        setTimeout(function() {
+            document.querySelector('.ceo-section').scrollIntoView({
+                behavior: 'smooth', // 부드러운 스크롤
+                block: 'start' // 섹션 맨 위로 스크롤
+            });
+        }, 100); // 0.1초 후 실행
+        
+    } else {
+        // 미리보기가 보이고 있으면 전체 메시지로 바꿈 (초등학생 설명: 짧은 글을 길게 만들기)
+        messagePreview.style.display = 'none'; // 미리보기 숨기기
+        messageFull.style.display = 'block'; // 전체 텍스트 보이기
+        toggleBtn.textContent = '닫기'; // 버튼 텍스트를 "닫기"로 변경
+        
+        console.log('인사말을 전체보기 모드로 변경했습니다');
+        
+        // 전체 메시지에 부드러운 나타나는 효과 추가 (초등학생 설명: 긴 글이 예쁘게 나타나게 하기)
+        messageFull.style.opacity = '0'; // 처음에는 투명하게
+        messageFull.style.transform = 'translateY(20px)'; // 아래쪽에서 시작
+        messageFull.style.transition = 'all 0.5s ease'; // 0.5초 동안 부드럽게 변화
+        
+        // 50밀리초 후에 나타나는 효과 시작 (초등학생 설명: 잠깐 기다린 후 효과 시작)
+        setTimeout(function() {
+            messageFull.style.opacity = '1'; // 불투명하게 만들기
+            messageFull.style.transform = 'translateY(0)'; // 원래 위치로 이동
+        }, 50);
+    }
+}
+
+// CEO 이미지 로드 에러 처리 (초등학생 설명: 사진이 안 나오면 다른 걸 보여주기)
+document.addEventListener('DOMContentLoaded', function() {
+    const ceoImage = document.querySelector('.ceo-image');
+    
+    if (ceoImage) {
+        // 이미지 로드에 실패했을 때 실행되는 함수
+        ceoImage.addEventListener('error', function() {
+            console.log('CEO 이미지를 불러올 수 없어서 대체 이미지를 사용합니다');
+            
+            // 대체 이미지 또는 기본 스타일 적용
+            this.style.background = 'linear-gradient(135deg, #1f4e79, #2d5a27)'; // 그라데이션 배경
+            this.style.display = 'flex'; // 플렉스 레이아웃
+            this.style.alignItems = 'center'; // 세로 가운데 정렬
+            this.style.justifyContent = 'center'; // 가로 가운데 정렬
+            this.style.color = 'white'; // 흰색 글자
+            this.style.fontSize = '24px'; // 글자 크기
+            this.style.fontWeight = 'bold'; // 굵은 글자
+            this.innerHTML = 'CEO'; // 텍스트 표시
+            this.alt = 'CEO 대체 이미지'; // 대체 텍스트 변경
+        });
+        
+        // 이미지가 성공적으로 로드되었을 때
+        ceoImage.addEventListener('load', function() {
+            console.log('CEO 이미지가 성공적으로 로드되었습니다');
+        });
+    }
+    
+    // 연락처 전화번호 클릭 이벤트 (초등학생 설명: 전화번호를 누르면 전화걸기)
+    const phoneNumbers = document.querySelectorAll('.phone-number');
+    
+    phoneNumbers.forEach(function(phoneNumber) {
+        phoneNumber.addEventListener('click', function(event) {
+            const number = this.textContent; // 클릭한 전화번호 가져오기
+            console.log(`전화번호 ${number}를 클릭했습니다`);
+            
+                         // 모바일 기기에서는 전화앱이 자동으로 열림
+             // 데스크탑에서는 기본 프로그램으로 열림
+         });
+     });
+});
+
+// FAQ 토글 기능 (FAQ 질문을 클릭하면 답변이 나타나거나 사라짐)
+function toggleFAQ(questionElement) {
+    console.log('FAQ 항목을 클릭했습니다');
+    
+    // 클릭한 질문이 속한 FAQ 항목 찾기 (초등학생 설명: 클릭한 질문이 어떤 상자에 들어있는지 찾기)
+    const faqItem = questionElement.closest('.faq-item');
+    
+    if (faqItem) {
+        // 현재 이 FAQ가 열려있는지 확인 (초등학생 설명: 지금 답변이 보이는지 확인)
+        const isActive = faqItem.classList.contains('active');
+        
+        // 모든 FAQ 항목을 닫기 (초등학생 설명: 다른 모든 답변들을 숨기기)
+        const allFAQItems = document.querySelectorAll('.faq-item');
+        allFAQItems.forEach(function(item) {
+            item.classList.remove('active');
+            console.log('FAQ 항목을 닫았습니다');
+        });
+        
+        // 클릭한 FAQ가 닫혀있었으면 열기 (초등학생 설명: 답변이 숨겨져 있었으면 보여주기)
+        if (!isActive) {
+            faqItem.classList.add('active');
+            console.log('FAQ 항목을 열었습니다');
+            
+            // 열린 FAQ 항목으로 부드럽게 스크롤 (초등학생 설명: 화면을 부드럽게 움직여서 답변 보기 편하게 하기)
+            setTimeout(function() {
+                faqItem.scrollIntoView({
+                    behavior: 'smooth', // 부드러운 스크롤
+                    block: 'nearest' // 가장 적절한 위치로 스크롤
+                });
+            }, 100); // 0.1초 후 실행
+        }
+    }
+}
+
+// 질문 제출 폼 처리 (초등학생 설명: 질문을 제출하는 기능)
+document.addEventListener('DOMContentLoaded', function() {
+    const questionForm = document.getElementById('questionForm');
+    
+    if (questionForm) {
+        // 폼이 제출될 때 실행되는 함수
+        questionForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // 기본 폼 제출 동작 막기 (초등학생 설명: 페이지가 새로고침되지 않게 하기)
+            
+            console.log('질문 폼이 제출되었습니다');
+            
+            // 입력된 값들 가져오기 (초등학생 설명: 사용자가 적은 내용들 읽어오기)
+            const questionTitle = document.getElementById('questionTitle').value.trim();
+            const questionContent = document.getElementById('questionContent').value.trim();
+            const contactInfo = document.getElementById('contactInfo').value.trim();
+            
+            // 필수 입력 사항 확인 (초등학생 설명: 꼭 써야 하는 것들이 비어있는지 확인)
+            if (!questionTitle || !questionContent) {
+                alert('질문 제목과 내용을 모두 입력해주세요.');
+                console.log('필수 입력 사항이 누락되었습니다');
+                return; // 함수 종료
+            }
+            
+            // 질문 데이터 저장 (실제 서버로 전송하는 대신 콘솔에 출력)
+            const questionData = {
+                title: questionTitle, // 질문 제목
+                content: questionContent, // 질문 내용
+                contact: contactInfo, // 연락처 (선택사항)
+                timestamp: new Date().toISOString() // 제출 시간
+            };
+            
+            console.log('제출된 질문 데이터:', questionData);
+            
+            // 실제 프로젝트에서는 여기서 서버로 데이터를 전송합니다
+            // 예시: fetch('/api/questions', { method: 'POST', body: JSON.stringify(questionData) })
+            
+            // 폼 내용 초기화 (초등학생 설명: 입력란을 모두 비우기)
+            questionForm.reset();
+            
+            // 성공 메시지 표시 (초등학생 설명: "질문이 접수되었습니다" 메시지 보여주기)
+            showSubmissionMessage();
+            
+            console.log('질문이 성공적으로 제출되었습니다');
+        });
+    }
+});
+
+// 질문 제출 성공 메시지 표시 함수
+function showSubmissionMessage() {
+    console.log('제출 성공 메시지를 표시합니다');
+    
+    // 메시지 요소 찾기 (초등학생 설명: "질문이 접수되었습니다" 메시지 상자 찾기)
+    const submissionMessage = document.getElementById('submissionMessage');
+    
+    if (submissionMessage) {
+        // 메시지 표시 (초등학생 설명: 숨겨진 메시지를 보이게 하기)
+        submissionMessage.style.display = 'block';
+        
+        // 부드러운 나타나는 효과 추가 (초등학생 설명: 메시지가 예쁘게 나타나게 하기)
+        submissionMessage.style.opacity = '0';
+        submissionMessage.style.transform = 'translateY(20px)';
+        submissionMessage.style.transition = 'all 0.5s ease';
+        
+        // 50밀리초 후에 나타나는 효과 시작 (초등학생 설명: 잠깐 기다린 후 효과 시작)
+        setTimeout(function() {
+            submissionMessage.style.opacity = '1'; // 불투명하게 만들기
+            submissionMessage.style.transform = 'translateY(0)'; // 원래 위치로 이동
+        }, 50);
+        
+        // 메시지를 Q&A 섹션 내에서 보이도록 스크롤 (초등학생 설명: 메시지가 잘 보이도록 화면 조정)
+        setTimeout(function() {
+            submissionMessage.scrollIntoView({
+                behavior: 'smooth', // 부드러운 스크롤
+                block: 'nearest' // 가장 적절한 위치로 스크롤
+            });
+        }, 100);
+        
+        // 5초 후 메시지 자동으로 숨기기 (초등학생 설명: 5초 후에 메시지를 자동으로 없애기)
+        setTimeout(function() {
+            submissionMessage.style.opacity = '0'; // 투명하게 만들기
+            submissionMessage.style.transform = 'translateY(-20px)'; // 위로 이동
+            
+            // 애니메이션이 끝난 후 완전히 숨기기
+            setTimeout(function() {
+                submissionMessage.style.display = 'none';
+                console.log('제출 성공 메시지를 자동으로 숨겼습니다');
+            }, 500); // 0.5초 후 실행
+        }, 5000); // 5초 후 실행
+    }
+}
+
+// 입력란 실시간 유효성 검사 (초등학생 설명: 사용자가 입력하는 동안 검사하기)
+document.addEventListener('DOMContentLoaded', function() {
+    const questionTitle = document.getElementById('questionTitle');
+    const questionContent = document.getElementById('questionContent');
+    const contactInfo = document.getElementById('contactInfo');
+    const submitBtn = document.querySelector('.submit-btn');
+    
+    // 입력란이 모두 존재하는지 확인
+    if (questionTitle && questionContent && submitBtn) {
+        
+        // 입력 상태 확인 함수 (초등학생 설명: 모든 칸이 채워졌는지 확인하는 함수)
+        function checkFormValidity() {
+            const titleFilled = questionTitle.value.trim().length > 0; // 제목이 입력되었는지
+            const contentFilled = questionContent.value.trim().length > 0; // 내용이 입력되었는지
+            
+            // 모든 필수 항목이 채워졌으면 버튼 활성화 (초등학생 설명: 모든 칸이 채워지면 버튼을 누를 수 있게 하기)
+            if (titleFilled && contentFilled) {
+                submitBtn.style.opacity = '1'; // 버튼을 선명하게
+                submitBtn.style.cursor = 'pointer'; // 마우스 포인터
+                console.log('폼이 유효합니다 - 제출 가능');
+            } else {
+                submitBtn.style.opacity = '0.7'; // 버튼을 흐리게
+                submitBtn.style.cursor = 'default'; // 기본 마우스 커서
+                console.log('폼이 유효하지 않습니다 - 필수 항목 미입력');
+            }
+        }
+        
+        // 입력란에 내용이 입력될 때마다 검사 실행
+        questionTitle.addEventListener('input', checkFormValidity);
+        questionContent.addEventListener('input', checkFormValidity);
+        
+        // 이메일 형식 검사 (초등학생 설명: 이메일 주소가 올바른지 확인)
+        if (contactInfo) {
+            contactInfo.addEventListener('input', function() {
+                const emailValue = this.value.trim();
+                
+                if (emailValue.length > 0) {
+                    // 간단한 이메일 형식 검사
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    
+                    if (emailPattern.test(emailValue)) {
+                        this.style.borderColor = '#2d5a27'; // 올바르면 초록색 테두리
+                        console.log('올바른 이메일 형식입니다');
+                    } else {
+                        this.style.borderColor = '#e74c3c'; // 틀리면 빨간색 테두리
+                        console.log('잘못된 이메일 형식입니다');
+                    }
+                } else {
+                    this.style.borderColor = '#e0e0e0'; // 비어있으면 기본 테두리
+                }
+            });
+        }
+        
+        // 페이지 로딩 시 초기 검사
+        checkFormValidity();
+    }
+}); 
